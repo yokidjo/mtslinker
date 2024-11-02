@@ -25,7 +25,7 @@
 Чтобы запустить проект, выполните следующий код:
 
 ```python
-from mtslink.webinar import fetch_webinar_data
+from mtslinker.webinar import fetch_webinar_data
 
 fetch_webinar_data(
   event_sessions='476183303',
