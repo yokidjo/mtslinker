@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import Dict, Tuple, List
+from typing import Dict, Tuple, List, Union
 
 import numpy as np
 from moviepy.audio.AudioClip import AudioArrayClip, CompositeAudioClip
@@ -91,12 +91,17 @@ def create_audio_with_gaps(total_duration: float, audio_clips: List[AudioFileCli
 
 
 def compile_final_video(total_duration: float, video_clips: List[VideoFileClip], audio_clips: List[AudioFileClip],
-                        output_path: str):
+                        output_path: str, max_duration: Union[int, None]):
     video_result = create_video_with_gaps(total_duration, video_clips)
 
     if audio_clips:
         combined_audio = create_audio_with_gaps(total_duration, audio_clips)
         video_result = video_result.set_audio(combined_audio)
+
+    if max_duration:
+        if video_result.duration > max_duration:
+            logging.info(f'Duration limit! Crop!')
+            video_result = video_result.subclip(0, max_duration)
 
     video_result.write_videofile(
         output_path,
