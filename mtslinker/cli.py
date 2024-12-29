@@ -11,8 +11,8 @@ def parse_arguments():
         'url',
         help=(
             'Webinar link in one of the following formats: '
-            'https://my.mts-link.ru/82001031/364010987/record-new/1272106065/record-file/1201063703 or '
-            'https://my.mts-link.ru/82001031/645775866/record-new/693446463'
+            'https://my.mts-link.ru/12345678/987654321/record-new/123456789/record-file/1234567890 or '
+            'https://my.mts-link.ru/12345678/987654321/record-new/123456789'
         )
     )
     parser.add_argument(
