@@ -3,15 +3,17 @@ from typing import Dict, Union
 
 import httpx
 import tqdm
+import logging
 
-TIMEOUT_SETTINGS = httpx.Timeout(18.0, connect=9.0)
+TIMEOUT_SETTINGS = httpx.Timeout(None, connect=None)
 
 
 def construct_json_data_url(event_session_id: str, recording_id: str) -> str:
-    if not recording_id:
-        raise ValueError('Missing webinar recording ID.')
     if not event_session_id:
         raise ValueError('Missing webinar event session ID.')
+    
+    if not recording_id:
+        return f'https://my.mts-link.ru/api/eventsessions/{event_session_id}/record?withoutCuts=false'
     return f'https://my.mts-link.ru/api/event-sessions/{event_session_id}/record-files/{recording_id}/flow?withoutCuts=false'
 
 
@@ -28,6 +30,18 @@ def fetch_json_data(url: str, session_id: Union[str, None]) -> Dict:
             },
             cookies=cookies
         )
+        
+    try:
+        error_data = response.json()
+        if error_data.get("error", {}).get("code") == 403:
+            logging.error(
+                'Access denied: session_id token is required. '
+                'Provide it using the "--session-id" parameter.'
+            )
+            return
+    except Exception:
+        logging.warning('Server response does not contain JSON.')
+            
     response.raise_for_status()
     return response.json()
 

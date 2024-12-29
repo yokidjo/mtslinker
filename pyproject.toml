@@ -11,6 +11,8 @@ httpx = "^0.27.2"
 tqdm = "^4.66.5"
 moviepy = "^1.0.3"
 
+[tool.poetry.scripts]
+mtslinker = "mtslinker.cli:main"
 
 [build-system]
 requires = ["poetry-core"]
