@@ -28,10 +28,10 @@ def process_video_clips(directory: str, json_data: Dict) -> Tuple[float, List[Vi
 
                 downloaded_file_path = download_video_chunk(url, directory)
                 try:
-                    video_clip = VideoFileClip(downloaded_file_path, fps_source='fps').set_start(start_time)
+                    video_clip = VideoFileClip(downloaded_file_path, fps_source='fps').with_start(start_time)
                     video_clips.append(video_clip)
                 except KeyError:
-                    audio_clip = AudioFileClip(downloaded_file_path).set_start(start_time)
+                    audio_clip = AudioFileClip(downloaded_file_path).with_start(start_time)
                     audio_clips.append(audio_clip)
     logging.info(f'Total duration of clips: {total_duration}')
 
@@ -46,7 +46,7 @@ def create_video_with_gaps(total_duration: float, video_clips: List[VideoFileCli
         if video.start > current_time:
             gap_duration = video.start - current_time
             if gap_duration > 0:
-                empty_clip = ColorClip(size=(1920, 1080), color=(0, 0, 0), duration=gap_duration).set_start(
+                empty_clip = ColorClip(size=(1920, 1080), color=(0, 0, 0), duration=gap_duration).with_start(
                     current_time)
                 clips.append(empty_clip)
 
@@ -55,7 +55,7 @@ def create_video_with_gaps(total_duration: float, video_clips: List[VideoFileCli
 
     if current_time < total_duration:
         remaining_duration = total_duration - current_time
-        empty_clip = ColorClip(size=(1920, 1080), color=(0, 0, 0), duration=remaining_duration).set_start(current_time)
+        empty_clip = ColorClip(size=(1920, 1080), color=(0, 0, 0), duration=remaining_duration).with_start(current_time)
         clips.append(empty_clip)
 
     final_video = concatenate_videoclips(clips, method='compose')
@@ -71,7 +71,7 @@ def create_audio_with_gaps(total_duration: float, audio_clips: List[AudioFileCli
         if audio.start > current_time:
             gap_duration = audio.start - current_time
             if gap_duration > 0:
-                silence_segment = AudioArrayClip(np.zeros((int(gap_duration * 8000), 2)), fps=8000).set_start(
+                silence_segment = AudioArrayClip(np.zeros((int(gap_duration * 8000), 2)), fps=8000).with_start(
                     current_time)
                 audio_segments.append(silence_segment)
 
@@ -80,7 +80,7 @@ def create_audio_with_gaps(total_duration: float, audio_clips: List[AudioFileCli
 
     if current_time < total_duration:
         remaining_duration = total_duration - current_time
-        silence_segment = AudioArrayClip(np.zeros((int(remaining_duration * 8000), 2)), fps=8000).set_start(
+        silence_segment = AudioArrayClip(np.zeros((int(remaining_duration * 8000), 2)), fps=8000).with_start(
             current_time)
         audio_segments.append(silence_segment)
 
