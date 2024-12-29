@@ -6,8 +6,7 @@ import numpy as np
 from moviepy.audio.AudioClip import AudioArrayClip, CompositeAudioClip
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.VideoClip import ColorClip
-from moviepy.video.compositing.concatenate import concatenate_videoclips
-from moviepy.video.io.VideoFileClip import VideoFileClip
+from moviepy import VideoFileClip, concatenate_videoclips
 
 from mtslinker.downloader import download_video_chunk
 
