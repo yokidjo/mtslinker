@@ -14,5 +14,5 @@ setup(
             'mtslinker=mtslinker.cli:main',
         ],
     },
-    python_requires=">=3.12",
+    python_requires=">=3.9",
 )
