@@ -23,7 +23,7 @@ def parse_arguments():
 
 def extract_ids_from_url(url: str):
     url_pattern = (
-        r'https://my\.mts-link\.ru/\d+/\d+/record-new/(\d+)(?:/record-file/(\d+))?'
+        r'^https://my\.mts-link\.ru/(?:[^/]+/)?\d+/\d+/record-new/(\d+)(?:/record-file/(\d+))?$'
     )
     match = re.match(url_pattern, url)
 
