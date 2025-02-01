@@ -8,6 +8,10 @@ from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.VideoClip import ColorClip
 from moviepy import VideoFileClip, concatenate_videoclips
 
+import warnings
+warnings.simplefilter("ignore")
+
+
 from mtslinker.downloader import download_video_chunk
 
 
@@ -95,7 +99,7 @@ def compile_final_video(total_duration: float, video_clips: List[VideoFileClip],
 
     if audio_clips:
         combined_audio = create_audio_with_gaps(total_duration, audio_clips)
-        video_result = video_result.set_audio(combined_audio)
+        video_result = video_result.with_audio(combined_audio)
 
     if max_duration:
         if video_result.duration > max_duration:
