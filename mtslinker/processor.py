@@ -30,7 +30,7 @@ def process_video_clips(directory: str, json_data: Dict) -> Tuple[float, List[Vi
                 try:
                     video_clip = VideoFileClip(downloaded_file_path, fps_source='fps').with_start(start_time)
                     video_clips.append(video_clip)
-                except KeyError:
+                except (KeyError, OSError):
                     audio_clip = AudioFileClip(downloaded_file_path).with_start(start_time)
                     audio_clips.append(audio_clip)
     logging.info(f'Total duration of clips: {total_duration}')
