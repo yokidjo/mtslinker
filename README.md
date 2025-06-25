@@ -51,3 +51,19 @@ fetch_webinar_data(
   session_id='a1b2c3d4'    # Optional
 )
 ```
+
+## Docker
+Для запуска через Docker:
+
+1. Соберите образ:
+   ```bash
+   docker-compose build
+   ```
+2. Запустите контейнер:
+   ```bash
+   docker-compose run --rm mtslinker [URL] [--session-id SESSION_ID]
+   ```
+#### Пример с аргументами   
+   ```bash
+   docker-compose run --rm mtslinker https://my.mts-link.ru/12345678/987654321/record-new/123456789/record-file/1234567890 --session-id a1b2c3d4
+   ```
