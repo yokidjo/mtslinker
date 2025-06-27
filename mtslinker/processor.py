@@ -106,10 +106,22 @@ def compile_final_video(total_duration: float, video_clips: List[VideoFileClip],
             logging.info(f'Duration limit! Crop!')
             video_result = video_result.subclip(0, max_duration)
 
-    video_result.write_videofile(
-        output_path,
-        codec='libx264',
-        audio_codec='aac',
-        preset='ultrafast',
-        threads=os.cpu_count()
-    )
+    try:
+        # Пытаемся скопировать без перекодировки (если аудио/видео совместимы)
+        video_result.write_videofile(
+            output_path,
+            codec="copy",
+            audio_codec="copy",
+            preset="ultrafast",
+            threads=os.cpu_count()
+        )
+    except Exception as e:
+        print(f"Не удалось скопировать без перекодировки ({e}), пробуем перекодировать...")
+        # Fallback: перекодируем с libx264 + AAC
+        video_result.write_videofile(
+            output_path,
+            codec="copy",
+            audio_codec="aac",
+            preset="ultrafast",
+            threads=os.cpu_count()
+        )

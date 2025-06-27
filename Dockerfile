@@ -2,6 +2,18 @@ FROM python:3.13-slim
 
 WORKDIR /app
 
+# Устанавливаем ffmpeg
+RUN apt-get update && apt-get install -y \
+    ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
+
+# Проверяем зависимости FFmpeg
+RUN ldd /usr/bin/ffmpeg && \
+    ffmpeg -version && \
+    ffmpeg -hide_banner -codecs | grep -q "aac" && \
+    ffmpeg -hide_banner -codecs | grep -q "h264" && \
+    echo "✅ ffmpeg готов к работе (AAC/H.264 доступны)"
+
 # Копируем только requirements.txt сначала для кэширования
 COPY requirements.txt .
 
